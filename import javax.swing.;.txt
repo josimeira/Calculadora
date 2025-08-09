@@ -1,0 +1,81 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class CalculadoraSwing extends JFrame implements ActionListener {
+
+    private JTextField campo1, campo2, resultado;
+    private JButton btnSomar, btnSubtrair, btnMultiplicar, btnDividir;
+
+    public CalculadoraSwing() {
+        setTitle("Calculadora Swing");
+        setSize(350, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new GridLayout(5, 2, 5, 5));
+
+        // Campos de entrada
+        add(new JLabel("Número 1:"));
+        campo1 = new JTextField();
+        add(campo1);
+
+        add(new JLabel("Número 2:"));
+        campo2 = new JTextField();
+        add(campo2);
+
+        add(new JLabel("Resultado:"));
+        resultado = new JTextField();
+        resultado.setEditable(false);
+        add(resultado);
+
+        // Botões
+        btnSomar = new JButton("Somar");
+        btnSubtrair = new JButton("Subtrair");
+        btnMultiplicar = new JButton("Multiplicar");
+        btnDividir = new JButton("Dividir");
+
+        btnSomar.addActionListener(this);
+        btnSubtrair.addActionListener(this);
+        btnMultiplicar.addActionListener(this);
+        btnDividir.addActionListener(this);
+
+        add(btnSomar);
+        add(btnSubtrair);
+        add(btnMultiplicar);
+        add(btnDividir);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try {
+            double num1 = Double.parseDouble(campo1.getText());
+            double num2 = Double.parseDouble(campo2.getText());
+            double res = 0;
+
+            if (e.getSource() == btnSomar) {
+                res = num1 + num2;
+            } else if (e.getSource() == btnSubtrair) {
+                res = num1 - num2;
+            } else if (e.getSource() == btnMultiplicar) {
+                res = num1 * num2;
+            } else if (e.getSource() == btnDividir) {
+                if (num2 == 0) {
+                    JOptionPane.showMessageDialog(this, "Não é possível dividir por zero!");
+                    return;
+                }
+                res = num1 / num2;
+            }
+
+            resultado.setText(String.valueOf(res));
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Digite valores numéricos válidos!");
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new CalculadoraSwing().setVisible(true);
+        });
+    }
+}
